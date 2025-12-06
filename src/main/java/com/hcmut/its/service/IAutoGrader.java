@@ -1,7 +1,9 @@
 package com.hcmut.its.service;
 
-import com.hcmut.its.model.MCQQuestion;
+import com.hcmut.its.model.Answer;
+import com.hcmut.its.model.Submission;
 
 public interface IAutoGrader {
-    Integer gradeMCQ(MCQQuestion question, String studentAnswer);
+    Integer grade(Answer answer);
+    Integer calculateScore(Submission submission);
 }

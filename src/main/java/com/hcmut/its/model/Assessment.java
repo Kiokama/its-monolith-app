@@ -1,5 +1,6 @@
 package com.hcmut.its.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,8 +27,10 @@ public class Assessment {
     private Integer totalPoints;
 
     @OneToMany(mappedBy = "assessment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Question> questions;
 
     @OneToMany(mappedBy = "assessment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Submission> submissions;
 }

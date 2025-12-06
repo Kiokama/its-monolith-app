@@ -44,7 +44,7 @@ tmp/
 # Spring / credentials (avoid committing sensitive configs)
 /.env
 *.env
-
+application-*.yml
 credentials.yml
 secrets.yml
 

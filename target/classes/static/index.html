@@ -4,48 +4,93 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>ITS - Assessment Tester</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>ITS - Assessment Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-    <main>
-        <h1>Assessment Tester</h1>
+<body class="bg-gray-100 text-gray-800">
+    <div class="container mx-auto p-4">
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-700">Assessment Manager</h1>
+            <div class="flex gap-2 mt-4">
+                <a href="create-question.html"
+                    class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-md">Create
+                    Question</a>
+                <a href="take-test.html"
+                    class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-md">Take Test</a>
+            </div>
+        </header>
 
-        <section id="list-section">
-            <h2>Assessments</h2>
-            <button id="refreshBtn">Refresh</button>
-            <table id="assessmentsTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Total Points</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </section>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Left Column -->
+            <div id="left-column">
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-semibold">Assessments</h2>
+                        <div>
+                            <button id="refreshBtn"
+                                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300">Refresh</button>
+                            <button id="newBtn"
+                                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md transition duration-300">New
+                                Assessment</button>
+                        </div>
+                    </div>
+                    <table id="assessmentsTable" class="w-full text-left table-auto">
+                        <thead class="bg-gray-200">
+                            <tr>
+                                <th class="px-4 py-2">ID</th>
+                                <th class="px-4 py-2">Title</th>
+                                <th class="px-4 py-2">Points</th>
+                                <th class="px-4 py-2 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Rows will be injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
 
-        <section id="detail-section">
-            <h2>Details</h2>
-            <pre id="detailPre">Chọn một assessment để xem chi tiết...</pre>
-        </section>
+                <!-- Form Section (hidden by default) -->
+                <div id="form-section" class="bg-white p-6 rounded-lg shadow-lg mt-8 hidden">
+                    <h2 id="formTitle" class="text-2xl font-semibold mb-4">Create Assessment</h2>
+                    <form id="assessmentForm">
+                        <input type="hidden" id="assessmentId" />
+                        <div class="mb-4">
+                            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                            <input type="text" id="title" required
+                                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                        </div>
+                        <div class="mb-4">
+                            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                            <textarea id="description" rows="4"
+                                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label for="totalPoints" class="block text-sm font-medium text-gray-700">Total
+                                Points</label>
+                            <input type="number" id="totalPoints" min="0" value="0" required
+                                class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                        </div>
+                        <div class="flex justify-end gap-4">
+                            <button type="submit" id="saveBtn"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md transition duration-300">Save</button>
+                            <button type="button" id="cancelBtn"
+                                class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-md transition duration-300">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-        <section id="form-section">
-            <h2 id="formTitle">Create Assessment</h2>
-            <form id="assessmentForm">
-                <input type="hidden" id="assessmentId" />
-                <label>Title<br /><input id="title" required /></label><br />
-                <label>Description<br /><textarea id="description"></textarea></label><br />
-                <label>Total Points<br /><input id="totalPoints" type="number" min="0" value="0"
-                        required /></label><br />
-                <button type="submit" id="saveBtn">Save</button>
-                <button type="button" id="cancelBtn">Cancel</button>
-            </form>
-        </section>
-    </main>
+            <!-- Right Column -->
+            <div id="right-column">
+                <div class="bg-white p-6 rounded-lg shadow-lg sticky top-4">
+                    <h2 class="text-2xl font-semibold mb-4">Details</h2>
+                    <pre id="detailPre"
+                        class="bg-gray-800 text-white p-4 rounded-md overflow-x-auto">Select an assessment to view details...</pre>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>

@@ -1,7 +1,9 @@
 const apiBase = "/api/assessments";
+const formSection = document.getElementById("form-section");
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("refreshBtn").addEventListener("click", loadList);
+  document.getElementById("newBtn").addEventListener("click", showForm);
   document.getElementById("assessmentForm").addEventListener("submit", onSave);
   document.getElementById("cancelBtn").addEventListener("click", resetForm);
   loadList();
@@ -9,29 +11,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadList() {
   const tbody = document.querySelector("#assessmentsTable tbody");
-  tbody.innerHTML = "...loading";
+  tbody.innerHTML =
+    '<tr><td colspan="4" class="text-center p-4">...loading</td></tr>';
   try {
     const res = await fetch(apiBase);
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
+    const contentType = res.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      throw new Error(
+        "Response is not JSON. Ensure backend is running on http://localhost:8080"
+      );
+    }
     const list = await res.json();
     tbody.innerHTML = "";
     list.forEach((a) => {
       const tr = document.createElement("tr");
+      tr.className = "border-b hover:bg-gray-50";
       tr.innerHTML = `
-				<td>${a.id ?? ""}</td>
-				<td>${escapeHtml(a.title)}</td>
-				<td>${a.totalPoints ?? ""}</td>
-				<td>
-					<button data-id="${a.id}" class="view">View</button>
-					<button data-id="${a.id}" class="edit">Edit</button>
-					<button data-id="${a.id}" class="delete">Delete</button>
-				</td>
-			`;
+                <td class="px-4 py-2">${a.id ?? ""}</td>
+                <td class="px-4 py-2">${escapeHtml(a.title)}</td>
+                <td class="px-4 py-2">${a.totalPoints ?? ""}</td>
+                <td class="px-4 py-2 text-right">
+                    <button data-id="${
+                      a.id
+                    }" class="view text-blue-500 hover:underline mr-2">View</button>
+                    <button data-id="${
+                      a.id
+                    }" class="edit text-indigo-500 hover:underline mr-2">Edit</button>
+                    <button data-id="${
+                      a.id
+                    }" class="delete text-red-500 hover:underline">Delete</button>
+                </td>
+            `;
       tbody.appendChild(tr);
     });
     attachRowHandlers();
   } catch (err) {
-    tbody.innerHTML = '<tr><td colspan="4">Error loading list</td></tr>';
-    console.error(err);
+    tbody.innerHTML = `<tr><td colspan="4" class="text-center p-4 text-red-500">Error: ${escapeHtml(
+      err.message
+    )}</td></tr>`;
+    console.error("loadList error:", err);
   }
 }
 
@@ -61,15 +82,21 @@ async function viewAssessment(id) {
   try {
     const res = await fetch(`${apiBase}/${id}`);
     if (!res.ok) {
-      pre.textContent = "Not found";
+      pre.textContent = `Not found (${res.status})`;
       return;
     }
     const data = await res.json();
     pre.textContent = JSON.stringify(data, null, 2);
   } catch (err) {
-    pre.textContent = "Error";
+    pre.textContent = `Error: ${err.message}`;
     console.error(err);
   }
+}
+
+function showForm() {
+  resetForm();
+  formSection.classList.remove("hidden");
+  document.getElementById("formTitle").textContent = "Create Assessment";
 }
 
 async function editAssessment(id) {
@@ -82,17 +109,18 @@ async function editAssessment(id) {
     document.getElementById("description").value = a.description || "";
     document.getElementById("totalPoints").value = a.totalPoints ?? 0;
     document.getElementById("formTitle").textContent = "Edit Assessment";
+    formSection.classList.remove("hidden");
   } catch (err) {
     console.error(err);
+    alert("Error loading assessment: " + err.message);
   }
 }
 
 function resetForm() {
+  document.getElementById("assessmentForm").reset();
   document.getElementById("assessmentId").value = "";
-  document.getElementById("title").value = "";
-  document.getElementById("description").value = "";
-  document.getElementById("totalPoints").value = 0;
   document.getElementById("formTitle").textContent = "Create Assessment";
+  formSection.classList.add("hidden");
 }
 
 async function onSave(e) {
@@ -119,14 +147,27 @@ async function onSave(e) {
       });
     }
     if (!res.ok) {
-      const text = await res.text();
-      return alert("Error: " + res.status + " " + text);
+      const contentType = res.headers.get("content-type");
+      let errorMsg = `HTTP ${res.status}`;
+      if (contentType && contentType.includes("application/json")) {
+        try {
+          const errorData = await res.json();
+          if (errorData.errors) {
+            errorMsg = Object.values(errorData.errors).join("\n");
+          } else if (errorData.message) {
+            errorMsg = errorData.message;
+          }
+        } catch (e) {
+          // ignore parse error
+        }
+      }
+      return alert("Error: " + errorMsg);
     }
     resetForm();
     loadList();
   } catch (err) {
     console.error(err);
-    alert("Network error");
+    alert("Network error: " + err.message);
   }
 }
 
@@ -142,10 +183,14 @@ async function deleteAssessment(id) {
     }
   } catch (err) {
     console.error(err);
+    alert("Error deleting: " + err.message);
   }
 }
 
 function escapeHtml(s = "") {
+  if (s === null || s === undefined) {
+    return "";
+  }
   return String(s).replace(
     /[&<>"']/g,
     (c) =>

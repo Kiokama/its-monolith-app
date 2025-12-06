@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Create Question - ITS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <a href="index.html" class="text-blue-500 hover:underline mb-4 inline-block">← Back to Assessments</a>
+        <h1 class="text-3xl font-bold mb-8">Create Question</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold mb-4">Select Assessment & Question Type</h2>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium">Assessment</label>
+                    <select id="assessmentSelect" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option value="">-- Select Assessment --</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium">Question Type</label>
+                    <select id="questionType" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md">
+                        <option value="MCQ">Multiple Choice (MCQ)</option>
+                        <option value="ESSAY">Essay</option>
+                    </select>
+                </div>
+
+                <form id="questionForm">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium">Content/Question</label>
+                        <textarea id="content" required rows="4"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium">Points</label>
+                        <input type="number" id="points" min="1" required
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" />
+                    </div>
+
+                    <!-- MCQ only -->
+                    <div id="mcqSection">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium">Options (comma-separated)</label>
+                            <input type="text" id="optionsInput" placeholder="Option 1, Option 2, Option 3..."
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" />
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium">Correct Answer</label>
+                            <input type="text" id="correctAnswer"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md" />
+                        </div>
+                    </div>
+
+                    <!-- Essay only -->
+                    <div id="essaySection" class="hidden">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium">Rubric</label>
+                            <textarea id="rubric" rows="4"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md"></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md">Save
+                        Question</button>
+                </form>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold mb-4">Questions Preview</h2>
+                <div id="previewList" class="space-y-4">
+                    <p class="text-gray-500">Select an assessment to view questions</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="questions.js"></script>
+</body>
+
+</html>

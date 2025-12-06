@@ -32,7 +32,6 @@ public class BasicAssessmentValidator implements IAssessmentValidator {
         if (id == null || !repository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Assessment not found: " + id);
         }
-        // Reuse create validations for fields
         validateForCreate(assessment);
     }
 }

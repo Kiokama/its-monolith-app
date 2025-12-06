@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Entity
 @Table(name = "questions")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
