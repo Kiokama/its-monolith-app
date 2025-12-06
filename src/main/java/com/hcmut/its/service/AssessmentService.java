@@ -9,10 +9,12 @@ import java.util.Optional;
 @Service
 public class AssessmentService implements IAssessmentService {
     private final AssessmentRepository assessmentRepository;
+    private final IAssessmentValidator validator;
 
     // Constructor injection
-    public AssessmentService(AssessmentRepository assessmentRepository) {
+    public AssessmentService(AssessmentRepository assessmentRepository, IAssessmentValidator validator) {
         this.assessmentRepository = assessmentRepository;
+        this.validator = validator;
     }
 
     @Override
@@ -27,11 +29,13 @@ public class AssessmentService implements IAssessmentService {
 
     @Override
     public Assessment createAssessment(Assessment assessment) {
+        validator.validateForCreate(assessment);
         return assessmentRepository.save(assessment);
     }
 
     @Override
     public Assessment updateAssessment(Long id, Assessment assessment) {
+        validator.validateForUpdate(id, assessment);
         return assessmentRepository.findById(id)
                 .map(existing -> {
                     existing.setTitle(assessment.getTitle());

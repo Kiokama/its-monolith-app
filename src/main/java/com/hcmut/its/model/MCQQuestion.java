@@ -13,18 +13,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class MCQQuestion extends Question {
-    @Column(name = "option_a")
-    private String optionA;
+    // Lưu các lựa chọn ở dạng text (JSON hoặc phân tách bằng ký tự); có thể
+    // refactor thành entity riêng nếu cần
+    @Column(columnDefinition = "TEXT")
+    private String options;
 
-    @Column(name = "option_b")
-    private String optionB;
-
-    @Column(name = "option_c")
-    private String optionC;
-
-    @Column(name = "option_d")
-    private String optionD;
-
-    @Column(name = "correct_answer")
+    @Column(nullable = false)
     private String correctAnswer;
 }

@@ -1,0 +1,57 @@
+# Build outputs
+/target/
+/build/
+/out/
+
+# Maven/Gradle wrappers & cache
+/.mvn/
+/.mvn/
+/.gradle/
+/gradle/
+/**/gradle-wrapper.jar
+mvnw
+mvnw.cmd
+
+# IDEs
+/.idea/
+/*.iml
+*.iws
+.classpath
+.project
+.settings/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and temp
+*.log
+logs/
+*.tmp
+tmp/
+
+# Java artifacts
+*.class
+*.jar
+*.war
+*.ear
+
+# Generated sources
+/generated/
+/generated-sources/
+
+# Spring / credentials (avoid committing sensitive configs)
+/.env
+*.env
+
+credentials.yml
+secrets.yml
+
+# Database crash logs
+hs_err_pid*
+
+# Others
+dist/
+node_modules/
+.idea/
