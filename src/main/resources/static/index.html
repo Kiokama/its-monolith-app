@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ITS - Assessment Tester</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <main>
+        <h1>Assessment Tester</h1>
+
+        <section id="list-section">
+            <h2>Assessments</h2>
+            <button id="refreshBtn">Refresh</button>
+            <table id="assessmentsTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Total Points</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <section id="detail-section">
+            <h2>Details</h2>
+            <pre id="detailPre">Chọn một assessment để xem chi tiết...</pre>
+        </section>
+
+        <section id="form-section">
+            <h2 id="formTitle">Create Assessment</h2>
+            <form id="assessmentForm">
+                <input type="hidden" id="assessmentId" />
+                <label>Title<br /><input id="title" required /></label><br />
+                <label>Description<br /><textarea id="description"></textarea></label><br />
+                <label>Total Points<br /><input id="totalPoints" type="number" min="0" value="0"
+                        required /></label><br />
+                <button type="submit" id="saveBtn">Save</button>
+                <button type="button" id="cancelBtn">Cancel</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
